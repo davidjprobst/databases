@@ -1,6 +1,6 @@
 ### Exercises
 
-What data types do each of these values represent?
+1. What data types do each of these values represent?
 
 1. "A Clockwork Orange"
 2. 42
@@ -8,41 +8,41 @@ What data types do each of these values represent?
 4. 98.7
 5. $15.99
 
-> (1) string, (2) number, (3) number, (4) float, (5) float
+> (1) string, (2) number, (3) date, (4) float, (5) smallmoney
 
 
 
-Explain when a database would be used. Explain when a text file would be used.
+2. Explain when a database would be used. Explain when a text file would be used.
 
 > A database would be used when you have to store and manipulate large sets of data and/or multiple users manipulating data at the same time. Text files can be used for smaller sets of data where there is no concern for data to be manipulated from multiple users at the same time.
 
 
 
-Describe one difference between SQL and other programming languages.
+3. Describe one difference between SQL and other programming languages.
 
 > SQL is declarative rather than procedural. Meaning it does not describe steps of a process for a computer to run, but send queries about what information we want without defining how to find it.
 
 
 
-In your own words, explain how the pieces of a database system fit together at a high level.
+4. In your own words, explain how the pieces of a database system fit together at a high level.
 
 > Databases stores data in binary file format which is unreadable by humans. Databases have GUIs that allow humans to read them. Data is stored in tables with rows and columns that represent individual items.
 
 
 
-Explain the meaning of table, row, column, and value.
+5. Explain the meaning of table, row, column, and value.
 
 > Table is a set of rows and columns. Rows represent individual items. Each type of data within an item is in a specific column that describes the data it holds. Values are what is held in each cell of the table.
 
 
 
-List three data types that can be used in a table.
+6. List three data types that can be used in a table.
 
 > string, number, float
 
 
 
-Given this payments table, provide an English description of the following queries and include their results:
+7. Given this payments table, provide an English description of the following queries and include their results:
 
      SELECT date, amount
      FROM payments;
@@ -56,9 +56,20 @@ Given this payments table, provide an English description of the following queri
      WHERE payee = 'Mega Foods';
 
 > Select dates and amounts from all payments.
-> Select amount from all payments over 500.
-> Select all columns in payments data from 'Mega Foods'
+  Result
+  2016-05-01T00:00:00.000Z	1500.0000
+  2016-05-10T00:00:00.000Z	37.0000
+  2016-05-15T00:00:00.000Z	124.9300
+  2016-05-23T00:00:00.000Z	54.7200
 
+> Select amount from all payments over 500.
+  Result
+  1500.0000
+  
+> Select all columns in payments data from 'Mega Foods'
+  Result
+  2016-05-15T00:00:00.000Z	Mega Foods	124.9300	Groceries
+  
 
 
 Given this users table, write SQL queries using the following criteria and include the output:
@@ -67,15 +78,24 @@ The email and sign-up date for the user named DeAndre Data.
 The user ID for the user with email 'aleesia.algorithm@uw.edu'.
 All the columns for the user ID equal to 4.
 
-> SELECT email, date
+> SELECT email, signup
   FROM users
   WHERE name = "DeAndre Data";
 
-> SELECT userId
+  output = Query Error: error: column "DeAndre Data" does not exist
+
+> SELECT userid
   FROM users
   WHERE email = 'aleesia.algorithm@uw.edu';
+
+  output = 1
 
 > SELECT *
   FROM users
   WHERE userId = 4;
+
+  output = 
+  4	Brandy Boolean	bboolean@nasa.gov	1999-10-15T00:00:00.000Z
+
+  
 
