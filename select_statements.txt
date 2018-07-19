@@ -1,0 +1,109 @@
+### Questions
+
+1. Write out a generic SELECT statement.
+
+> SELECT column1, column2
+  FROM table
+  WHERE column1 LIKE Val%
+
+
+
+2. Create a fun way to remember the order of operations in a SELECT statement, such as a mnemonic.
+
+> SELECT FROM JOIN WHERE GROUP HAVING ORDER LIMIT
+  San Francisco Jeans With Gigantic Holes Often Loosen
+
+
+
+3. Given this dogs table, write queries to select the following pieces of data:
+   Intake teams typically guess the breed of shelter dogs, so the breed column may have multiple words (for example, "Labrador Collie mix").
+
+• Display the name, gender, and age of all dogs that are part Labrador.
+> SELECT name, gender, age
+  FROM dogs
+  WHERE breed LIKE '%labrador%';
+
+• Display the ids of all dogs that are under 1 year old.
+> SELECT id
+  FROM dogs
+  WHERE age < 1;
+
+• Display the name and age of all dogs that are female and over 35lbs.
+> SELECT name, age
+  FROM dogs
+  WHERE gender = 'F' AND weight > 35;
+
+• Display all of the information about all dogs that are not Shepherd mixes.
+> SELECT *
+  FROM dogs
+  WHERE breed NOT LIKE '%shepherd%';
+
+• Display the id, age, weight, and breed of all dogs that are either over 60lbs or Great Danes.
+> SELECT id, age, weight, breed
+  FROM dogs
+  WHERE weight > 60 OR breed LIKE 'great dane';
+
+
+
+4. Given this cats table, what records are returned from these queries? 
+
+• SELECT name, adoption_date FROM cats;
+> Mushi        2016-03-22
+  Seashell     NULL
+  Azul         2016-04-17
+  Victoire     2016-09-01
+  Nala         NULL
+
+• SELECT name, age FROM cats;
+> Mushi        1
+  Seashell     7
+  Azul         3
+  Victoire     7
+  Nala         1
+
+
+
+5. From the cats table, write queries to select the following pieces of data.
+
+• Display all the information about all of the available cats. 
+> SELECT *
+  FROM cats
+  WHERE adoption_date = NULL;
+
+• Choose one cat of each age to show to potential adopters.
+> SELECT DISTINCT age, id
+  FROM cats;
+
+• Find all of the names of the cats, so you don’t choose duplicate names for new cats.
+> SELECT name
+  FROM cats;
+
+
+
+6. List each comparison operator and explain when you would use it. Include a real world example for each.
+
+> = | to select items exactly equal to defined value | get names from a 'guests' that is exactly 'Dan Ahn'
+  > | select items greater than the number defined | select all customers who are older than 65   
+  >= | select items greater than or equal to the number defined | select bar attendees who are 21 and older
+  < | select items less than or equal to the number defined | select food items that have been on the shelf for less than 7 days
+  <= | select items less than or equal to the number defined | select all children that are 1 year old or less
+  != (<>) | select items that are not equals | select all dogs that are not german shepherds
+  LIKE | select two items that partially match | select all people from a party with 'david' in their name
+  
+
+
+
+7. From the cats table, what data is returned from these queries?
+• SELECT name FROM cats WHERE gender = ‘F’;
+> Seashell
+  Nala
+
+• SELECT name FROM cats WHERE age <> 3;
+> Mushi
+  Seashell
+  Victoire
+  Nala
+
+• SELECT ID FROM cats WHERE name != ‘Mushi’ AND gender = ‘M’;
+> Azul
+  Victoire
