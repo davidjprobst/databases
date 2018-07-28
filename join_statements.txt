@@ -1,0 +1,161 @@
+1. How do you find related data held in two separate data tables?
+
+> Find data that is related in two separate tables by identifying columns that hold the same information. The matching columns between the two tables can relate the data held in each to one another.
+
+
+
+2. Explain, in your own words, the difference between an INNER JOIN, LEFT OUTER JOIN, and RIGHT OUTER JOIN. Give a real-world example for each.
+
+> INNER JOIN contains all rows from both tables that meet all join conditions specified
+  (e.g. joining a table holding a `customerOrder` column joins with a table containing a `orderStatus` column by `orderId`. orders that do not have a status will be left out of the joined table)
+
+> LEFT OUTER JOIN is an inner join that also contains rows for all rows contained in the first table, even if there is not a match in the second table
+  (e.g. a table holding `firstName` and `lastName` for customers is joined with a table holding `middleName` by `customerId`. All columns in the first table will be displayed in the joined table. If a customer does not have a middle name, the `middleName` column for that customer will display as `null` in the joined table.)
+
+> RIGHT OUTER JOIN is and inner join that also contains rows for all rows contained in the second table, even if there is not a match in the first table.
+  (e.g. a table containing `itemsToPurchase` column is merged with a table containing a `purchasedItems` column. These items are matched by item ID. If there are items in the `purchasedItems` column in table 2 that do not match with an item in the `itemsToPurchase` column in table one. the items are still added to the joined table, with the `purchasedItems` column containing `null`)
+
+
+
+3. Define primary key and foreign key. Give a real-world example for each.
+
+> primary key = a unique identifier that only exists once in each row of the database table. ensures that no duplicate rows exist
+
+> foreign key = the primary key from another table that is added to another table as a non-unique attribute. creates the relationship between two tables
+
+> e.g. in a table containing order information `orderId` could serve as the primary key. if a table containing information about all items with the primary key `itemId`, was joined with the table containing order information by `orderId`, `itemId` would be a foreign key.
+
+
+
+4. Define aliasing.
+
+> Aliasing is creating short variable names (usually a single letter) to replace the table name in a query
+
+
+
+5. Change this query so that you are using aliasing:
+
+> SELECT p.name, c.salary, c.vacation_days 
+  FROM professor AS p
+  JOIN compensation AS c
+  ON p.id = c.professor_id;
+
+
+
+6. Why would you use a NATURAL JOIN? Give a real-world example.
+
+> NATURAL JOIN only uses columns that exist in both tables. (e.g. if two animal shelters that each had a table containing cats wanted to merge. table one has columns <name, age, gender, dateOfBirth, roomName> table two has columns <name, age, gender, dateOfBirth, favoriteToy, color>. using natural merge, a new table will be created with the columns <name, age, gender, dateOfBirth>
+
+
+
+7. Using this Employee schema and data, write queries to find the following information:
+
+• List all employees and all shifts.
+> SELECT scheduled_shifts.employee_id, employees.name, scheduled_shifts.shift_id, shifts.date, shifts.start_time, shifts.end_time
+  FROM scheduled_shifts
+  INNER JOIN employees ON employees.id = scheduled_shifts.employee_id
+  INNER JOIN shifts ON shifts.id = scheduled_shifts.shift_id;
+  
+
+
+8. Using this Adoption schema and data, please write queries to retrieve the following information and include the results:
+
+• Create a list of all volunteers. If the volunteer is fostering a dog, include each dog as well.
+> SELECT volunteers.first_name, volunteers.last_name, dogs.name
+  FROM volunteers
+  LEFT OUTER JOIN dogs
+  ON dogs.id = volunteers.foster_dog_id;
+
+  first_name,	last_name,	name,
+  Rubeus,	Hagrid, 	Munchkin
+  Marjorie,	Dursley,	Marmaduke
+  Sirius,	Black,   	null
+  Remus,	Lupin,  	null
+  Albus,	Dumbledore,	null
+
+
+• The cat's name, adopter's name, and adopted date for each cat adopted within the past month to be displayed as part of the "Happy Tail" social media promotion which posts recent successful adoptions.
+> SELECT cats.name, adopters.first_name, adopters.last_name
+  FROM cat_adoptions
+  INNER JOIN cats ON cats.id = cat_adoptions.cat_id
+  INNER JOIN adopters ON adopters.id = cat_adoptions.cat_id;
+
+  name,	  first_name,	last_name
+  Mushi,  Hermione,	Granger
+  Azul,   Argus,	Filch
+
+
+• Create a list of adopters who have not yet chosen a dog to adopt.
+> SELECT adopters.first_name, adopters.last_name
+  FROM dog_adoptions
+  INNER JOIN adopters
+  ON adopters.id != dog_adoptions.adopter_id;
+
+  first_name	last_name
+  Hermione	Granger
+  Arabella	Figg
+  
+
+• Lists of all cats and all dogs who have not been adopted.
+> SELECT cats.name
+  FROM cat_adoptions
+  RIGHT OUTER JOIN cats ON cat_adoptions.cat_id = cats.id
+  WHERE cat_adoptions.date IS null;
+
+  name
+  Seashell
+  Nala
+
+
+  SELECT dogs.name
+  FROM dog_adoptions
+  RIGHT OUTER JOIN dogs ON dog_adoptions.dog_id = dogs.id
+  WHERE dog_adoptions.date IS null;
+
+  name
+  Munchkin
+  Boujee
+  Lassie
+  Marley
+  Marmaduke
+
+
+• The name of the person who adopted Rosco.
+> SELECT first_name, last_name
+  FROM adopters
+  WHERE adopters.id IS 3;
+
+  first_name	last_name
+  Argus	        Filch
+
+
+
+9. Using this Library schema and data, write queries applying the following scenarios and include the results:
+
+• To determine if the library should buy more copies of a given book, please provide the names and position, in order, of all of the patrons with a hold (request for a book with all copies checked out) on "Advanced Potion-Making".
+
+> SELECT holds.rank, patrons.name
+  FROM holds
+  INNER JOIN patrons ON holds.patron_id = patrons.id AND isbn = '9136884926'
+  ORDER BY rank ASC;
+
+  rank	 name
+  1	 Terry Boot
+  2	 Cedric Diggory
+
+
+
+• List all of the library patrons. If they have one or more books checked out, list the books with the patrons.
+
+> SELECT patrons.name, books.title
+  FROM transactions
+  RIGHT OUTER JOIN patrons ON transactions.patron_id = patrons.id
+  LEFT OUTER JOIN books ON transactions.checked_out_date = NULL;
+
+  name	title
+  Terry Boot	        Advanced Potion-Making
+  Cedric Diggory	Fantastic Beasts and Where to Find Them
+
+
+
+
