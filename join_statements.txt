@@ -78,10 +78,10 @@
 > SELECT cats.name, adopters.first_name, adopters.last_name
   FROM cat_adoptions
   INNER JOIN cats ON cats.id = cat_adoptions.cat_id
-  INNER JOIN adopters ON adopters.id = cat_adoptions.cat_id;
+  INNER JOIN adopters ON adopters.id = cat_adoptions.cat_id
+  WHERE cat_adoptions.date < CURRENT_DATE - INTERVAL '1 MONTH';
 
   name,	  first_name,	last_name
-  Mushi,  Hermione,	Granger
   Azul,   Argus,	Filch
 
 
@@ -122,8 +122,10 @@
 
 • The name of the person who adopted Rosco.
 > SELECT first_name, last_name
-  FROM adopters
-  WHERE adopters.id IS 3;
+  FROM dog_adoptions
+  LEFT OUTER JOIN adopters ON adopters.id = dog_adoptions.adopter_id
+  RIGHT OUTER JOIN dogs ON dog_adoptions.dog_id = dogs.id
+  WHERE dogs.name = 'Rosco';
 
   first_name	last_name
   Argus	        Filch
@@ -147,14 +149,18 @@
 
 • List all of the library patrons. If they have one or more books checked out, list the books with the patrons.
 
-> SELECT patrons.name, books.title
-  FROM transactions
-  RIGHT OUTER JOIN patrons ON transactions.patron_id = patrons.id
-  LEFT OUTER JOIN books ON transactions.checked_out_date = NULL;
+> SELECT DISTINCT patrons.name, ARRAY_AGG(books.title)
+  FROM patrons
+  RIGHT OUTER JOIN transactions ON patrons.id = transactions.patron_id
+  LEFT OUTER JOIN books ON books.isbn = transactions.isbn AND transactions.checked_in_date IS null
+  GROUP BY patrons.id;
 
-  name	title
-  Terry Boot	        Advanced Potion-Making
-  Cedric Diggory	Fantastic Beasts and Where to Find Them
+  name	              array_agg
+  Padma Patil	      [null]
+  Terry Boot	      ["Advanced Potion-Making",null]
+  Cedric Diggory      ["Fantastic Beasts and Where to Find Them"]
+  Cho Chang	      [null]
+  Hermione Granger    [null,null]
 
 
 
